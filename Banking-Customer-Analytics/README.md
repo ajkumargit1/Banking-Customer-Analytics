@@ -1,110 +1,72 @@
-# 🏦 Banking Dashboard - End-to-End Data Analysis Project
+# Banking Customer Analytics
 
-This project focuses on building an interactive **Banking Dashboard** using Power BI. It involves the complete data analysis lifecycle — from data cleaning and transformation to exploratory data analysis (EDA) and visualization.
+An end-to-end analysis of a 3,000-customer retail banking dataset. It covers preparing the data, exploring how customers hold money across products, and presenting the findings in an interactive four-page Power BI dashboard.
 
----
+**Tools:** Python (Pandas, NumPy, Matplotlib, Seaborn) · Power BI · DAX · MySQL · SQL
 
-## 📌 Project Workflow
+## Workflow
 
-Data ➡️ MySQL ➡️ Data Cleaning & Preparation ➡️ EDA ➡️ Power BI Dashboard
+Customer data (MySQL) → preparation → exploratory analysis (Python) → Power BI dashboard
 
----
+## About the data
 
-## 📊 Dataset Information
+- **3,000 customers, 25 columns** (`data/Banking.csv`)
+- Customer profile: age, nationality, occupation, loyalty class, fee structure, join date
+- Finances: estimated income, superannuation savings, credit card balance, bank loans, deposits, checking, savings, foreign currency account, business lending, properties owned
+- Coded fields (branch, gender, income band ID) that needed readable labels
 
-- **Number of columns**: 24
-- **Stored in**: MySQL
+## What I did
 
----
+**1. Data preparation**
+- Converted the join date to a proper date type and confirmed there were no missing values.
+- Grouped estimated income into three bands: Low (up to 100K), Mid (100K to 300K) and High (over 300K). This gave 1,027 Low, 1,517 Mid and 456 High customers.
+- In Power BI, replaced coded values with readable gender and branch names and standardized categorical fields.
 
-## 🔧 Steps Involved
+**2. Exploratory analysis** (`eda/BankEDA.ipynb`)
+- Summarized categorical fields such as nationality, occupation, fee structure and loyalty class.
+- Compared the numeric measures with descriptive statistics, a correlation heatmap and scatter plots with fitted lines.
 
-### 1. Data Cleaning & Preparation
+**3. Findings**
+- Deposits, checking, savings and foreign currency balances are positively correlated, so customers who hold a lot in one product tend to hold a lot in the others. The strongest links are deposits with checking and deposits with savings.
+- Age and income show moderate relationships with savings, superannuation and checking balances, which fits a typical earning and saving lifecycle.
+- Property ownership is only weakly related to the banking variables, so it is probably driven by factors outside this dataset.
+- Business lending is moderately linked to bank loans but barely related to deposits, which suggests it serves a separate group of customers.
 
-- Categorized `Income` into bands:
-  - `Low`
-  - `Mid`
-  - `High`
-- Standardized gender, nationality, and other categorical variables.
-- Used conditional columns in Power BI to create income bands.
-- Replaced branch codes (`'1'`, `'2'`, etc.) with readable branch names.
-- Mapped gender codes:
-  - `'1'` → `Male`
-  - `'2'` → `Female`
+## Dashboard
 
----
+The Power BI report (`powerbi/Banking Dashboard.pbix`) has four pages.
 
-### 2. Exploratory Data Analysis (EDA)
+**Home** gives an overview with headline numbers and key visuals.
+![Home](powerbi/page1_home.png)
 
-- Categorical analysis on:
-  - Gender
-  - Nationality
-- Numerical analysis on:
-  - Credit Card Balance
-  - Bank Loans
-  - Bank Deposits
-  - Checking Account
-  - Saving Account
-  - Estimated Income
-  - Superannuation Savings
+**Loan Analysis** shows how loans are distributed across customer segments.
+![Loan Analysis](powerbi/page2_loan_analysis.png)
 
----
+**Deposit Analysis** covers account balances, deposit types and how they relate.
+![Deposit Analysis](powerbi/page3_deposit_analysis.png)
 
-### 3. Key Insights from EDA
+**Summary** brings together the main findings and demographic patterns.
+![Summary](powerbi/page4_summary.png)
 
-- Strong positive correlation between:
-  - `Bank Deposits`, `Checking Account`, `Saving Account`, and `Foreign Currency Account`.
-- Customers with high balance in one account type tend to hold substantial funds in other accounts as well.
+## Repository structure
 
----
+```
+├── data/
+│   └── Banking.csv
+├── eda/
+│   └── BankEDA.ipynb
+├── powerbi/
+│   ├── Banking Dashboard.pbix
+│   └── page1_home.png ... page4_summary.png
+├── requirements.txt
+└── README.md
+```
 
-## 📈 Dashboard Pages (Power BI)
+## Run the notebook
 
-1. **Home**
-2. **Loan Analysis**
-3. **Deposit Analysis**
-4. **Summary**
+```bash
+pip install -r requirements.txt
+jupyter notebook eda/BankEDA.ipynb
+```
 
----
-
-## 🚀 Tools & Technologies
-
-- **Database**: MySQL
-- **Visualization**: Power BI
-- **Languages**: SQL, DAX (in Power BI)
-
----
-
-## 🧠 Learnings
-
-- Data wrangling using SQL
-- Power BI conditional columns
-- Deriving insights through EDA
-- Building multi-page dashboards for presentation
-
----
-### ✅ Page 1: Home  
-> Overview of the banking data with summary statistics and key visuals.  
-
-<img src="powerbi/page1_home.png" alt="Page 1 - Home" width="700"/>
-
----
-
-### ✅ Page 2: Loan Analysis  
-> Insights into loan distribution, types, and customer segments.  
-
-<img src="powerbi/page2_loan_analysis.png" alt="Page 2 - Loan Analysis" width="700"/>
-
----
-
-### ✅ Page 3: Deposit Analysis  
-> Breakdown of account balances, deposit types, and correlation patterns.  
-
-<img src="powerbi/page3_deposit_analysis.png" alt="Page 3 - Deposit Analysis" width="700"/>
-
----
-
-### ✅ Page 4: Summary  
-> Final insights from EDA, including correlations and demographic trends.  
-
-<img src="powerbi/page4_summary.png" alt="Page 4 - Summary" width="700"/>
+Run it from the project root so the data path resolves. If the notebook can't find `Banking.csv`, adjust the path in the first cell.
